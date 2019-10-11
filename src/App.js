@@ -14,7 +14,7 @@ const Keys = {
   d: 68
 }
 
-// let move = Keys.Right;
+let move = Keys.Right;
 
 function initState() {
   const grid = initGrid();
@@ -35,7 +35,7 @@ function initState() {
     showGrid: true,
     lost: false,
     message: 'Press <space> or touch/click to start the game',
-    inprogress: false,
+    inProgress: false,
   }
 }
 function initGrid() {
@@ -53,28 +53,68 @@ function initGrid() {
   return grid;
 }
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'game_lost':
+      return {
+        ...state,
+        showGrid: state.showGrid,
+        lost: true,
+        message: 'Press <space> or touch/click to start the game',
+        inProgress: false,
+      }
+    case 'update':
+      return {
+        ...state,
+        ...action.newstate
+      }
 
+    case 'toggle_grid':
+      return {
+        ...state,
+        showGrid: !state.showGrid
+      };
+
+    case 'restart':
+      let newState = {
+        ...state,
+        message: 'Game in progress ☝',
+        inProgress: true,
+        lost: false,
+        snake: {
+          ...state.snake,
+          head: {
+            row: Math.floor(Math.random() * 5),
+            col: Math.floor(Math.random() * 5),
+          },
+          tail: [],
+        }
+      }
+      return newState;
+    default: {
+      console.log('DEFAULT ??');
+      return state;
+    }
+  }
+};
 
 function App() {
-  let reducer;
   const [state, dispatch] = useReducer(reducer, initState());
-
+  const { score, snake, message, lost, inprogress } = state;
 
   const drawGrid = () => {
     const { grid } = state;
-    console.log(grid)
     return (
       grid.map((row) => {
         return row.map(cell => {
-          console.log('cell:', cell)
-          let actorStyle = cellStyle(cell);
+          let actorStyle = styleCell(cell);
           return <div key={cell.row + cell.col} className={actorStyle} />
         });
       })
     );
   }
 
-  const cellStyle = (cell) => {
+  const styleCell = (cell) => {
     const { snake, food, showGrid } = state;
     let style = `cell `;
     if (snake.head.row === cell.row && snake.head.col === cell.col) {
@@ -91,25 +131,75 @@ function App() {
     style = showGrid ? style + ' cell-border' : style;
     return style;
   }
+  const randomizeFood = () => {
+    const { snake } = state;
+    const newFood = {
+      row: Math.floor(Math.random() * 10),
+      col: Math.floor(Math.random() * 10),
+    }
 
+    // If newFood position is same as withing snake path, randomize
+    if (snake.head.row === newFood.row
+      && snake.head.col === newFood.col) {
+      return randomizeFood();
+    }
+    return newFood;
+  }
+  let collideWithFood = true;
+  const gameEngine = () => {
+
+    let x = 1, y = 0;
+
+    if (move === Keys.Left) {
+       [x, y]  = [-1, 0];
+    } else if (move === Keys.Right) {
+      [x, y] = [1, 0];
+    } else if (move === Keys.Up) {
+      [x, y] = [0, -1];
+    } else if (move === Keys.Down) {
+      [x, y] = [0, 1];
+    }
+    const nextState = {
+      snake: {
+        ...state.snake,
+        head: {
+          row: state.snake.head.row + y,
+          col: state.snake.head.col + x
+        },
+        tail: [state.snake.head, ...state.snake.tail]
+      },
+      food: collideWithFood ?
+        randomizeFood() : state.food,
+      score: collideWithFood ? score + 1 : score,
+    };
+
+    dispatch({
+      type: 'update',
+      newstate: nextState
+    });
+  }
   return (
     <div className="App">
       <div className="grid-container">
         <div className="grid">
           {drawGrid()}
+            {/* {setTimeout(() => {
+            gameEngine()
+          },3000)} */}
         </div>
       </div>
     </div>
   );
 }
 
+
 export default App;
 
 
-//1-create grid
-//2-create food some where in grid
-//3-create snake
-//4-make snake move
+//1-create grid-done
+//2-create food some where in grid-done
+//3-create snake done
+//4-make snake move done
 //5-make snake grow on eating food
 //6-after eating make food appear on new grid
 //7-end game if snake touches edges or it self
