@@ -1,22 +1,128 @@
-.App {
-  text-align: center;
+body {
+  width: 100vw;
+  height: 100vh;
+  background: #1e2733;
 }
 
-.App-logo {
-  height: 40vmin;
+
+/* .game {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+} */
+
+/* .show-grid {
+  padding: 2px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.score {
+  padding: 2px;
+} */
+
+/* .timer {
+  width: 140px;
+  padding:2px;
+  margin-top: 5px;
+  background-color: #8e44ad;
+  display:flex;
+  color: white;
+}
+.timer span {
+  padding: 4px;
+} */
+
+
+.grid-container {
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+.grid {
+  width:800px;
+  height:800px;
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  grid-gap: 0;
+  /* background: black; */
+}
+
+/* .control-panel {
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+} */
+
+/* .control-panel > button:last-child {
+  margin-top: 10px;
+  font-size: 1.2em;
+} */
+
+/* .left-right {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin:15px;
+} */
+
+.cell {
+  display: inline-block;
 }
 
-.App-link {
-  color: #09d3ac;
+.cell-border{
+  border: 1px solid #94989E;
+}
+
+.food {
+  background: #EBC86E;
+}
+
+.head {
+  background:#656a73;
+  font-weight:800;
+  font-size: 2em;
+}
+
+
+
+@keyframes anim-tail {
+  from {background-color: #e74c3c;}
+  to {background-color: yellow;}
+}
+
+.tail {
+  background: #e74c3c;
+  border: 1px none blue;
+  animation-name: anim-tail;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.tail:after {
+  display:block;
+  text-align: center;
+}
+
+
+
+@keyframes anim-lost {
+  from {color: white;}
+  to {color: yellow;}
+}
+
+.game-lost {
+  animation-name: anim-lost;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  padding: 2px;
+  border-radius: 5px;
+  color: white;
+  font-size: 2em;
+  font-family: Noto Sans, sans-serif;
+  width: 200px;
 }
