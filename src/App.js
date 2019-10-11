@@ -5,22 +5,18 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
     </div>
   );
 }
 
 export default App;
+
+
+//1-create grid
+//2-create food some where in grid
+//3-create snake
+//4-make snake move
+//5-make snake grow on eating food
+//6-after eating make food appear on new grid
+//7-end game if snake touches edges or it self
