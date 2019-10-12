@@ -121,7 +121,7 @@ function App() {
     if (inProgress) {
       interval = setInterval(() => {
         gameEngine()
-      }, 500);
+      }, 300);
     } else if (!inProgress) {
       clearInterval(interval);
     }
