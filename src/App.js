@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useReducer} from 'react';
 import './App.css';
+import Timer from "./Timer"
 
 
 const Keys = {
@@ -15,10 +16,8 @@ const Keys = {
 }
 
 let move = Keys.Right;
-
-function initState() {
-  const grid = initGrid();
-  return {
+const grid = initGrid();
+const initState= {
     grid,
     snake: {
       head: {
@@ -34,10 +33,11 @@ function initState() {
     score: 0,
     showGrid: true,
     lost: false,
-    message: 'Press <space> or touch/click to start the game',
+    message: 'Click in start button to start the game',
     inProgress: false,
+    highScore: 0,
   }
-}
+
 function initGrid() {
   const grid = [];
   for (let row = 0; row < 20; row++) {
@@ -60,8 +60,9 @@ const reducer = (state, action) => {
         ...state,
         showGrid: state.showGrid,
         lost: true,
-        message: 'Press <space> or touch/click to start the game',
+        message: 'Click in start button to start the game',
         inProgress: false,
+        highScore:action.highScore
       }
     case 'update':
       return {
@@ -77,30 +78,59 @@ const reducer = (state, action) => {
 
     case 'restart':
       let newState = {
-        ...state,
-        message: 'Game in progress ☝',
+        ...initState,
         inProgress: true,
-        lost: false,
-        snake: {
-          ...state.snake,
-          head: {
-            row: Math.floor(Math.random() * 5),
-            col: Math.floor(Math.random() * 5),
-          },
-          tail: [],
-        }
+        highScore: action.highScore
       }
       return newState;
     default: {
-      console.log('DEFAULT ??');
       return state;
     }
   }
 };
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initState());
-  const { score, snake, message, lost, inprogress } = state;
+  const [state, dispatch] = useReducer(reducer, initState);
+  const { score, snake, message, lost, inProgress, start } = state;
+  const childRef = useRef();
+
+  // Keyboard events
+  const handleKeyPress = (e) => {
+    if (e.which === Keys.Left || e.which === Keys.a) {  // left /a
+      move = Keys.Left;
+    }
+    else if (e.which === Keys.Right || e.which === Keys.d) {  // right /d
+      move = Keys.Right;
+    }
+    else if (e.which === Keys.Up || e.which === Keys.w) {  // up /w
+      move = Keys.Up;
+    }
+    else if (e.which === Keys.Down || e.which === Keys.s) {  // down /s
+      move = Keys.Down;
+    }
+  }
+
+  useEffect(() => {
+    let interval = null;
+    if (inProgress) {
+      interval = setInterval(() => {
+        gameEngine()
+      }, 500);
+    } else if (!inProgress) {
+      clearInterval(interval);
+    }
+     return function cleanup() {
+       clearInterval(interval)
+    }
+  }, [inProgress, snake.head]);
+
+  useEffect(() => {
+
+    document.addEventListener('keydown', handleKeyPress);
+    return function cleanup() {
+      document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, []);
 
   const drawGrid = () => {
     const { grid } = state;
@@ -145,11 +175,35 @@ function App() {
     }
     return newFood;
   }
-  let collideWithFood = true;
+  const updateHighScore = () => {
+    let highScore = localStorage.getItem('highScore') || 0;
+    if (score > highScore) {
+      highScore = score;
+    }
+    localStorage.setItem('highScore', highScore);
+  }
+  const getHighScore = () => {
+    console.log("test")
+    return localStorage.getItem('highScore') || 0;
+  }
+  let highScore = getHighScore();
   const gameEngine = () => {
+    console.log("calling game engine")
+    const snakeAteFood = didSnakeAteFood();
+    const collideWithSelfOrWall = didSnakeCollideWithSelfOrWall();
+
+
+    if (collideWithSelfOrWall) {
+      // dispatch({ type: 'game_lost',highscore });
+      childRef.current.toggle();
+      updateHighScore();
+      highScore = getHighScore()
+      dispatch({ type: 'game_lost', highScore });
+      return;
+    }
 
     let x = 1, y = 0;
-
+//make it more reasonable
     if (move === Keys.Left) {
        [x, y]  = [-1, 0];
     } else if (move === Keys.Right) {
@@ -168,26 +222,72 @@ function App() {
         },
         tail: [state.snake.head, ...state.snake.tail]
       },
-      food: collideWithFood ?
+      food: snakeAteFood ?
         randomizeFood() : state.food,
-      score: collideWithFood ? score + 1 : score,
+      score: snakeAteFood ? score + 1 : score,
     };
+    if (!snakeAteFood) {
+      nextState.snake.tail.pop();
+    }
 
+    console.log('nextState:', nextState.snake.tail)
     dispatch({
       type: 'update',
       newstate: nextState
     });
   }
+
+  const didSnakeAteFood = () => {
+    const { food, snake } = state;
+    return food.row === snake.head.row &&
+      food.col === snake.head.col;
+  }
+
+  const didSnakeCollideWithSelfOrWall = () => {
+    const { snake, grid } = state;
+    const { head, tail } = snake;
+    return (snake.head.col >= grid.length ||
+      snake.head.row >= grid.length ||
+      snake.head.col < 0 ||
+      snake.head.row < 0) ||
+      tail.find(t => t.row === head.row
+      && t.col === head.col)
+  }
+  const onShowGridChange = (e) => {
+    dispatch({
+      type: 'toggle_grid'
+    });
+  }
+  const handleRestart = () => {
+    childRef.current.reset()
+    restart()
+  }
+  const restart = () => {
+    highScore = getHighScore();
+    dispatch({
+      type: 'restart',
+      highScore
+    })
+  }
+
+
+
   return (
     <div className="App">
+      <Timer ref={childRef}/>
+      <input type="checkbox"
+        checked={state.showGrid}
+        onChange={onShowGridChange} />
+          SHOW GRID
+          { <div>Hello {score}</div>}
+      <div>HighScore {highScore} </div>
+      <button onClick={handleRestart}>Restart/Start</button>
       <div className="grid-container">
         <div className="grid">
           {drawGrid()}
-            {/* {setTimeout(() => {
-            gameEngine()
-          },3000)} */}
         </div>
       </div>
+
     </div>
   );
 }
@@ -200,6 +300,10 @@ export default App;
 //2-create food some where in grid-done
 //3-create snake done
 //4-make snake move done
-//5-make snake grow on eating food
-//6-after eating make food appear on new grid
-//7-end game if snake touches edges or it self
+//5-make snake grow on eating food done
+//6-after eating make food appear on new grid done
+//7-end game if snake touches edges or it self done
+//count score done
+//store high score in local storage done
+//timer to to show done
+//button to reset the game done
