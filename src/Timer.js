@@ -30,7 +30,7 @@ const Timer = forwardRef((props, ref) => {
     return (
         <div className="app">
             <div className="time">
-                time:{seconds}s
+                time : {seconds}s
       </div>
         </div>
     );

@@ -273,18 +273,6 @@ function App() {
     })
   }
 
-  //   const updateGrid = (e) => {
-  //     const value = e.target.value;
-
-  //     resetGameEngine();
-  //       dispatch({
-  //         type: 'update_grid',
-  //         grid: initGrid(value, value)
-  //       });
-
-  // }
-
-
   return (
     <div className="App">
       <div className="info-wrapper">
@@ -301,13 +289,12 @@ function App() {
 
 
         </div>
-        {<div>Score: {score}</div>}
-        <div>HighScore:{highScore} </div>
+        {<div>Score : {score}</div>}
+        <div>high-score : {highScore} </div>
         <button onClick={handleRestart} className="restart">Restart/Start</button>
 
       </div>
       <div className="message">{message}</div>
-      {/* <input type="number" name="gridSize" onChange={updateGrid} /> */}
       <div className="grid-container">
         <div className="grid">
           {drawGrid()}
