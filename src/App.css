@@ -1,129 +1,102 @@
+:root {
+  --col: 30;
+  --row: 30;
+}
 body {
-  width: 100vw;
-  height: 100vh;
   background: #1e2733;
+  color: #94989e;
 }
-
-
-/* .game {
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-  align-items: center;
-} */
-
-/* .show-grid {
-  padding: 2px;
-}
-
-.score {
-  padding: 2px;
-} */
-
-/* .timer {
-  width: 140px;
-  padding:2px;
-  margin-top: 5px;
-  background-color: #8e44ad;
-  display:flex;
-  color: white;
-}
-.timer span {
-  padding: 4px;
-} */
-
 
 .grid-container {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
 }
 
 .grid {
-  width:800px;
-  height:800px;
+  width: 800px;
+  height: 800px;
   display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(var(--col), 1fr);
+  grid-template-rows: repeat(var(--row), 1fr);
   grid-gap: 0;
-  border: 1px solid #94989E;
-  /* background: black; */
+  border: 1px solid #94989e;
 }
-
-/* .control-panel {
-  margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
-/* .control-panel > button:last-child {
-  margin-top: 10px;
-  font-size: 1.2em;
-} */
-
-/* .left-right {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin:15px;
-} */
 
 .cell {
   display: inline-block;
 }
 
-.cell-border{
-  border: 1px solid #94989E;
+.cell-border {
+  border: 1px solid #94989e;
 }
 
 .food {
-  background: #EBC86E;
+  background: #ebc86e;
 }
 
-.head {
-  background:#656a73;
-  font-weight:800;
-  font-size: 2em;
-}
-
-
-
-@keyframes anim-tail {
-  from {background-color: #e74c3c;}
-  to {background-color: yellow;}
-}
-
+.head,
 .tail {
-  background: #e74c3c;
-  border: 1px none blue;
-  animation-name: anim-tail;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+  background: #656a73;
 }
 
-.tail:after {
-  display:block;
+.info-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  flex-grow: 0;
+  margin-top: 10px;
+}
+.message {
   text-align: center;
+  margin: 10px;
+}
+.restart {
+  color: #94989e;
+  border: 1px solid #94989e;
+  background: transparent;
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 2px 15px 0 rgba(210, 214, 220, 0.5);
+}
+.restart:hover {
+  border: 1px solid #ebc86e;
+  color: #ebc86e;
 }
 
-
-
-@keyframes anim-lost {
-  from {color: white;}
-  to {color: yellow;}
+.checkbox-wrapper {
+  display: block;
+  position: relative;
+  padding-left: 23px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size:inherit;
 }
 
-.game-lost {
-  animation-name: anim-lost;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  padding: 2px;
-  border-radius: 5px;
-  color: white;
-  font-size: 2em;
-  font-family: Noto Sans, sans-serif;
-  width: 200px;
+.checkbox-wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.check-mark {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #94989e;
+}
+
+.checkbox-wrapper:hover input ~ .check-mark {
+  background-color: #ccc;
+}
+
+.checkbox-wrapper input:checked ~ .check-mark {
+  background-color: #ebc86e;
 }

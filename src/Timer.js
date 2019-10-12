@@ -4,10 +4,6 @@ const Timer = forwardRef((props, ref) => {
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
 
-    // function toggle() {
-    //     setIsActive(!isActive);
-    // }
-
     useImperativeHandle(ref, () => ({
         reset() {
             setSeconds(0);
@@ -18,10 +14,7 @@ const Timer = forwardRef((props, ref) => {
     }
 
     }));
-    // function reset() {
-    //     setSeconds(0);
-    //     setIsActive(true);
-    // }
+
 
     useEffect(() => {
         let interval = null;
@@ -37,7 +30,7 @@ const Timer = forwardRef((props, ref) => {
     return (
         <div className="app">
             <div className="time">
-                {seconds}s
+                time:{seconds}s
       </div>
         </div>
     );
