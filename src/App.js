@@ -169,8 +169,8 @@ function App() {
   const randomizeFood = () => {
     const { snake } = state;
     const newFood = {
-      row: Math.floor(Math.random() * 10),
-      col: Math.floor(Math.random() * 10),
+      row: Math.floor(Math.random() * 30),
+      col: Math.floor(Math.random() * 30),
     }
 
     //edge case where generated random number is same

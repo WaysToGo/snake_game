@@ -14,8 +14,8 @@ body {
 }
 
 .grid {
-  width: 800px;
-  height: 800px;
+  width: 700px;
+  height: 700px;
   display: grid;
   grid-template-columns: repeat(var(--col), 1fr);
   grid-template-rows: repeat(var(--row), 1fr);
