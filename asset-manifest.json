@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/snake_game/static/css/main.21836296.chunk.css",
-    "main.js": "/snake_game/static/js/main.ab407430.chunk.js",
-    "main.js.map": "/snake_game/static/js/main.ab407430.chunk.js.map",
+    "main.js": "/snake_game/static/js/main.6d5046e0.chunk.js",
+    "main.js.map": "/snake_game/static/js/main.6d5046e0.chunk.js.map",
     "runtime-main.js": "/snake_game/static/js/runtime-main.40439f7e.js",
     "runtime-main.js.map": "/snake_game/static/js/runtime-main.40439f7e.js.map",
     "static/js/2.70933297.chunk.js": "/snake_game/static/js/2.70933297.chunk.js",
     "static/js/2.70933297.chunk.js.map": "/snake_game/static/js/2.70933297.chunk.js.map",
     "index.html": "/snake_game/index.html",
-    "precache-manifest.48b3ef0971cb82877a1fd2ab07baf536.js": "/snake_game/precache-manifest.48b3ef0971cb82877a1fd2ab07baf536.js",
+    "precache-manifest.043f14245142342da4321e29b2a12c9c.js": "/snake_game/precache-manifest.043f14245142342da4321e29b2a12c9c.js",
     "service-worker.js": "/snake_game/service-worker.js",
     "static/css/main.21836296.chunk.css.map": "/snake_game/static/css/main.21836296.chunk.css.map"
   },
@@ -16,6 +16,6 @@
     "static/js/runtime-main.40439f7e.js",
     "static/js/2.70933297.chunk.js",
     "static/css/main.21836296.chunk.css",
-    "static/js/main.ab407430.chunk.js"
+    "static/js/main.6d5046e0.chunk.js"
   ]
 }
