@@ -86,6 +86,7 @@ const reducer = (state, action) => {
         inProgress: true,
         highScore: action.highScore,
         grid: state.grid,
+        showGrid: state.showGrid,
       }
       return newState;
     default: {
